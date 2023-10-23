@@ -7,9 +7,12 @@ include_once('./Database.php');
 
 $plainText = generateRandomString(32);
 
-//findRHOinBabyHash($plainText);
+echo "Plain Text : $plainText <br>";
 
-findRHOMD5($plainText);
+echo findRHOinBabyHash($plainText)."<br>";
+
+//echo findCollision();
+
 
 function findRHOMD5($plain,$cycle=1)
 {
@@ -51,7 +54,10 @@ function findRHOinBabyHash($plain,$array=array())
     {
         $array[] = $hash;
         $count = count($array);
-        die('Ended Collision at ' .$count );
+        echo " Collision Hash : $hash  <br>";
+        echo 'Ended Collision at ' .$count ;
+
+        exit();
     }
     $array[] = $hash;
     return findRHOinBabyHash($hash,$array);
@@ -95,11 +101,15 @@ function babyHash($input) {
 
     for ($i = 0; $i < strlen($input); $i++) {
         $charCode = ord($input[$i]);
-        $hash = ($hash + ($charCode * $multiplier)) % 100000000; // Keep it within 8 decimal digits
-        $multiplier = ($multiplier * 31) % 100000000; // Primitive way to change multiplier, just an example
+        $hash = ($hash + ($charCode * $multiplier)) % 100000000;
+        $multiplier = ($multiplier * 31) % 100000000; 
     }
 
-    $hash = str_pad($hash, 8, '0', STR_PAD_RIGHT);  // Ensures it's always 8 digits
+    $hash = str_pad($hash, 8, '0', STR_PAD_RIGHT); 
+
+    $hash = dechex($hash);
+
+    $hash = str_pad($hash,8,'0',STR_PAD_RIGHT);
 
    return $hash;
 }
